@@ -32,7 +32,7 @@ ui <- fluidPage(
 
       selectInput(inputId = "fil",
                   label = "Velg fil:",
-                  choices = filer
+                  choices = list.files(path = "timetrafikk")
       )
     ),
     plotOutput("varmekart")
@@ -41,7 +41,7 @@ ui <- fluidPage(
 
 server <- function(input, output) {
 
-  filer <- list.files(path = "timetrafikk")
+  #filer <- list.files(path = "timetrafikk")
 
   output$varmekart <- renderPlot({
 
