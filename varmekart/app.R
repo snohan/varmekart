@@ -73,39 +73,37 @@ lag_heatmap <- function(lanevolumes, feltnr) {
   return(feltplott)
 }
 
+filer <- as.data.frame(list.files("./timetrafikk/"))
+colnames(filer) <- "filnavn"
 
-fil <- "./timetrafikk/100001-volumes-2017.csv"
-lanevolumes <- les_inn_timeverdier_uten_summering(fil)
-lag_heatmap(lanevolumes, 1)
+
+# fil <- "./timetrafikk/100001-volumes-2017.csv"
+# lanevolumes <- les_inn_timeverdier_uten_summering(fil)
+# lag_heatmap(lanevolumes, 1)
 
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
 
-   # Application title
-   titlePanel("Varmekart for timetrafikk"),
+  verticalLayout(
 
-   # Sidebar with a slider input for number of bins
-   sidebarLayout(
-      sidebarPanel(
-         sliderInput("bins",
-                     "Number of bins:",
-                     min = 1,
-                     max = 50,
-                     value = 30)
-      ),
+    titlePanel(h5("Varmekart for timetrafikk")),
 
-      # Show a plot of the generated distribution
-      mainPanel(
-         plotOutput("distPlot")
+    wellPanel(
+
+      selectInput(inputId = "fil",
+                  label = "Velg fil:",
+                  choices = c("fil1", "fil2") #filer$filnavn
       )
-   )
+    )#,
+    #plotOutput("varmekart")
+  )
 )
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
 
-   output$distPlot <- renderPlot({
+   output$varmekart <- renderPlot({
       # generate bins based on input$bins from ui.R
       x    <- faithful[, 2]
       bins <- seq(min(x), max(x), length.out = input$bins + 1)
