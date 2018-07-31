@@ -9,6 +9,7 @@ library(lubridate)
 library(ggExtra)
 library(ggthemes)
 library(DT)
+library(mgcv)
 
 
 ui <- fluidPage(
