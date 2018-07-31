@@ -2,24 +2,13 @@
 # This is a Shiny web application. You can run the application by clicking
 # the 'Run App' button above.
 #
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
 
 library(shiny)
 library(tidyverse)
 library(lubridate)
-#library(viridis)
 library(ggExtra)
 library(ggthemes)
 library(DT)
-
-
-
-# fil <- "./timetrafikk/100001-volumes-2017.csv"
-# lanevolumes <- les_inn_timeverdier_uten_summering(fil)
-# lag_heatmap(lanevolumes, 1)
 
 
 ui <- fluidPage(
@@ -33,15 +22,17 @@ ui <- fluidPage(
       selectInput(inputId = "fil",
                   label = "Velg fil:",
                   choices = list.files(path = "timetrafikk")
+                  ),
+      radioButtons(inputId = "felt",
+                   label = "Velg kjørefelt:",
+                   choices = c("1", "2", "3", "4", "5", "6", "7", "8"),
+                   inline = TRUE)
       )
     ),
     plotOutput("varmekart")
   )
-)
 
 server <- function(input, output) {
-
-  #filer <- list.files(path = "timetrafikk")
 
   output$varmekart <- renderPlot({
 
@@ -105,9 +96,8 @@ server <- function(input, output) {
     }
 
     fila <- paste0("timetrafikk/", input$fil)
-
     lanevolumes <- les_inn_timeverdier_uten_summering(fila)
-    lag_heatmap(lanevolumes, 1)
+    lag_heatmap(lanevolumes, input$felt)
 
   })
 }
