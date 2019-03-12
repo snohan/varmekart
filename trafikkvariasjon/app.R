@@ -1,6 +1,5 @@
 #
-# This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
+# Trafikkvariasjon med timetrafikk fra Trafikkdata-API.
 #
 
 library(shiny)
@@ -38,7 +37,7 @@ ui <- fluidPage(
                    inline = TRUE)
       )
     ),
-    plotOutput("varmekart")
+    plotOutput("varmekart", width = "80%")
   )
 
 server <- function(input, output) {
@@ -182,23 +181,23 @@ server <- function(input, output) {
         coord_equal() +
         scale_fill_viridis_c(name = "Trafikkmengde", option = "magma",
                              direction = -1) +
-        theme_tufte(base_size = 6) +
+        theme_tufte(base_size = 9) +
         facet_wrap( ~ maaned, ncol = 4) +
         scale_y_continuous(trans = "reverse", breaks = c(0, 8, 16, 23)) +
         scale_x_continuous(breaks = c(1, 15, 31)) +
         labs(title = paste0("Trafikkmengde per time - stasjonsnr. "),
              x = "Dag", y = "Timestart") +
         theme(legend.position = "right") +
-        theme(plot.title = element_text(size = 10)) +
-        theme(axis.text.y = element_text(size = 6)) +
+        theme(plot.title = element_text(size = 12)) +
+        #theme(axis.text.y = element_text(size = 6)) +
         theme(strip.background = element_rect(color = "white")) +
         theme(plot.title = element_text(hjust = 0.5)) +
         theme(axis.ticks = element_blank()) +
-        theme(axis.text = element_text(size = 6)) +
+        #theme(axis.text = element_text(size = 6)) +
         theme(panel.spacing.x = unit(0.01, "cm")) +
         theme(panel.spacing.y = unit(0.05, "cm")) +
-        theme(legend.title = element_text(size = 6)) +
-        theme(legend.text = element_text(size = 6)) +
+        #theme(legend.title = element_text(size = 6)) +
+        #theme(legend.text = element_text(size = 6)) +
         removeGrid()
 
       return(feltplott)
@@ -210,8 +209,9 @@ server <- function(input, output) {
     "2018-01-01T00:00:00+01:00"
     yearto <- #input$year + 1 #1.1
       "2019-01-01T00:00:00+01:00"
-    lanevolumes <- getHourlytraffic("73168V705238",
-      #input$trpid,
+    lanevolumes <- getHourlytraffic(
+      #"73168V705238",
+      input$trpid,
       yearfrom, yearto)
     # Hent ut alle felt som er med, og lag et plott for hver.
     lag_varmekart_total(lanevolumes)
